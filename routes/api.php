@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Requests\UserRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,15 +14,6 @@ use App\Http\Requests\UserRequest;
 |
 */
 
-// I changed from 'auth:sanctum' to 'auth:api' or 'api'.
-Route::middleware('api')->post('/users', function (UserRequest $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::post('/users', [UserController::class,'store']);
-
-/*
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
-*/
