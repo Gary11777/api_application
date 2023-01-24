@@ -22,9 +22,3 @@ Route::middleware('api')->post('/users', function (UserRequest $request) {
 });
 
 Route::post('/users', [UserController::class,'store']);
-
-/*
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
-*/
