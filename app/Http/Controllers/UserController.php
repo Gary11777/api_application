@@ -6,16 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected $userService;
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function store (UserRequest $request)
     {
         $user_data['name'] = $request->name;
         $user_data['email'] = $request->email;
         $user_data['password'] = Hash::make($request->password);
-        $user = User::create($user_data);
-        $token = $user->createToken('Token Name')->accessToken;
-        return ["token" => $token];
+        $this->userService->createUser($user_data);
     }
 }
