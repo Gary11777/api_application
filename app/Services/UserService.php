@@ -9,8 +9,6 @@ class UserService
 {
     public function createUser(array $user_data)
     {
-        $user = User::create($user_data);
-        $token = $user->createToken('Token Name')->accessToken;
-        return ["token" => $token];
+        return User::create($user_data);
     }
 }

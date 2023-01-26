@@ -20,6 +20,8 @@ class UserController extends Controller
         $user_data['name'] = $request->name;
         $user_data['email'] = $request->email;
         $user_data['password'] = Hash::make($request->password);
-        $this->userService->createUser($user_data);
+        $user = $this->userService->createUser($user_data);
+        $token = $user->createToken('Token Name')->accessToken;
+        return ["token" => $token];
     }
 }

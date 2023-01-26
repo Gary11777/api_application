@@ -35,6 +35,14 @@ return [
 
     'connections' => [
 
+        //+++ I add for make tests
+        'sqlite_testing' => [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ],
+        //--- I add for make tests
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
