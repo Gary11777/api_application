@@ -17,10 +17,7 @@ class UserController extends Controller
     }
     public function store (UserRequest $request)
     {
-        $user_data['name'] = $request->name;
-        $user_data['email'] = $request->email;
-        $user_data['password'] = Hash::make($request->password);
-        $user = $this->userService->createUser($user_data);
+        $user = $this->userService->createUser($request->all());
         $token = $user->createToken('Token Name')->accessToken;
         return ["token" => $token];
     }

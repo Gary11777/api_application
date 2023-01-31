@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 
 
+
 return [
 
     /*
@@ -36,13 +37,11 @@ return [
 
     'connections' => [
 
-        //+++ I add for make tests
         'sqlite_testing' => [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
         ],
-        //--- I add for make tests
 
         'sqlite' => [
             'driver' => 'sqlite',
