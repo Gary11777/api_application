@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic test example.
      *
@@ -14,8 +15,17 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response()
     {
-        $response = $this->post('api/users');
+        $this->artisan('passport:install');
 
-        $response->assertStatus(201);
+        $data = [
+            'name' => 'user4',
+            'email' => 'user4@gmail.com',
+            'password' => 'user4',
+            'password_confirmation' => 'user4'
+        ];
+
+        $response = $this->post('api/users', $data);
+
+        $response->assertStatus(200);
     }
 }

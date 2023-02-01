@@ -25,9 +25,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //Passport::personalAccessClientSecret(config('Nv5JnwJzthRbZNTLLARcjSMsaXNSAtENZ2CF22PX'));
-
-        //Passport::personalAccessClientId(config('1'));
     }
 }

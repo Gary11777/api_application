@@ -6,14 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-
-
 class UserTest extends TestCase
 {
     use RefreshDatabase;
     /** @test */
     public function testRegister()
     {
+        $this->artisan('passport:install');
         //prepare data for request
         $data = [
             'name' => 'user4',
