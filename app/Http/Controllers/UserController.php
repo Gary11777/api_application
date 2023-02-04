@@ -29,17 +29,18 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
+
+        if (Auth::attempt($request->only(['email', 'password']))) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->accessToken;
             return response([
-                'message' => 'There are incorrect password or e-mail.',
-                'error' => Response::HTTP_UNAUTHORIZED
+                "token" => $token
+            ]);
+        } else {
+            return back()->withErrors([
+                'message' => 'The provided credentials do not match our records.'
             ]);
         }
-        $token = $user->createToken('auth_token')->accessToken;
-        return response([
-            "token" => $token
-        ]);
-
     }
 }

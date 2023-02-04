@@ -16,15 +16,5 @@ use App\Http\Requests\LoginRequest;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// I changed from 'auth:sanctum' to 'auth:api' or 'api'.
-Route::middleware('auth:api')->post('/users', function (UserRequest $request) {
-    return $request->user();
-});
-Route::middleware('auth:api')->post('/login', function (LoginRequest $request) {
-    return $request->user();
-    //return $request->session();
-});
-
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);

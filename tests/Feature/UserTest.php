@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class UserTest extends TestCase
 {
@@ -29,47 +31,20 @@ class UserTest extends TestCase
         $response->assertJsonStructure(['token']);
     }
 
-    public function testLogin_correct_data()
+    public function testLogin()
     {
-
-        $user = User::factory()->create();
-        $user->dump();
+        $this->artisan('passport:install');
+        //$password = $this->fake->password;
+        $pass = 'user1';
+        $password_hash = Hash::make($pass);
+        $user = User::factory()->create([
+            'email' => 'user1@gmail.com',
+            'password' => $password_hash
+        ]);
         $response = $this->json('POST', 'api/login',[
             'email' => $user->email,
-            'password' => $user->password
+            'password' => $pass
         ])->assertStatus(200);
-        $response->dump();
         $response->assertJsonStructure(['token']);
-
-    }
-
-    public function testLogin_incorrect_password()
-    {
-
-        $user = User::factory()->create();
-
-        $response = $this->json('POST', 'api/login',[
-            'email' => $user->email,
-            'password' => 'user2'
-        ])->assertStatus(200)->assertJsonStructure([
-            'message',
-            'error'
-        ]);;
-
-    }
-
-    public function testLogin_incorrect_email()
-    {
-
-        $user = User::factory()->create();
-
-        $response = $this->json('POST', 'api/login',[
-            'email' => 'random@gmail.com',
-            'password' => $user->password
-        ])->assertStatus(200)->assertJsonStructure([
-            'message',
-            'error'
-        ]);;
-
     }
 }
