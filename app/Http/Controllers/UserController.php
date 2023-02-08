@@ -22,25 +22,19 @@ class UserController extends Controller
     {
         $user = $this->userService->createUser($request->all());
         $token = $user->createToken('auth_token')->accessToken;
-        return response([
-            "token" => $token
-        ]);
+        return response()->json(["token" => $token]);
     }
 
     public function login(LoginRequest $request)
     {
 
         if (Auth::attempt($request->only(['email', 'password']))) {
-            $request->session()->regenerate();
+            $user = $request->user();
             $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
-            return response([
-                "token" => $token
-            ]);
+            return response()->json(["token" => $token]);
         } else {
-            return back()->withErrors([
-                'message' => 'The provided credentials do not match our records.'
-            ]);
+            return response()->json('The provided credentials do not match our records.', 401);
         }
     }
 }
