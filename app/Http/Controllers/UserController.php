@@ -27,10 +27,8 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
-
         if (Auth::attempt($request->only(['email', 'password']))) {
             $user = $request->user();
-            $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
             return response()->json(["token" => $token]);
         } else {
