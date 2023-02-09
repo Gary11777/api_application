@@ -5,6 +5,10 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class UserTest extends TestCase
 {
@@ -24,6 +28,23 @@ class UserTest extends TestCase
         $response = $this->json('POST', 'api/users', $data)->assertStatus(200);
         //check the response and database changes. You can use any asserts you need.
         //find them in Laravel documentation
+        $response->assertJsonStructure(['token']);
+    }
+
+    public function testLogin()
+    {
+        $this->artisan('passport:install');
+        //$password = $this->fake->password;
+        $pass = 'user1';
+        $password_hash = Hash::make($pass);
+        $user = User::factory()->create([
+            'email' => 'user1@gmail.com',
+            'password' => $password_hash
+        ]);
+        $response = $this->json('POST', 'api/login',[
+            'email' => $user->email,
+            'password' => $pass
+        ])->assertStatus(200);
         $response->assertJsonStructure(['token']);
     }
 }
