@@ -20,5 +20,6 @@ class UserController extends Controller
         $user = $this->userService->createUser($request->all());
         $token = $user->createToken('Token Name')->accessToken;
         return ["token" => $token];
+
     }
 }
