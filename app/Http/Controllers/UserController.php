@@ -6,10 +6,12 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\ResetPassword;
 
 class UserController extends Controller
 {
@@ -34,5 +36,10 @@ class UserController extends Controller
         } else {
             return response()->json('The provided credentials do not match our records.', 401);
         }
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+
     }
 }
