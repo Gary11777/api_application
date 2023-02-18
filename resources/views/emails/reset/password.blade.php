@@ -1,9 +1,9 @@
 <x-mail::message>
-# Introduction
+# Reset Password
 
-Please copy the token and paste it in a respective row into Postman:
+Please copy the token and paste it in a respective row in Postman:
 <br><br>
-    The token is: {{ $token }}
+    The token is: <b>{{ $token }}</b>
 
 {{--<x-mail::button :url="''">
 Button Text

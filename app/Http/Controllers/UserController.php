@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\ResetPassword;
 
@@ -40,6 +43,24 @@ class UserController extends Controller
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-
+        try {
+            $userID = DB::table('users')->where('email', $request->email)->value('id');
+            if ($userID != null) {
+                $token = Str::random(10);
+                ResetPassword::updateOrCreate(
+                    ['user_id' => $userID],
+                    [
+                        'user_id' => $userID,
+                        'token' => $token
+                    ]
+                );
+                Mail::to($request->mail)->send(new \App\Mail\ResetPassword($token, $request->email));
+                return response()->json(['success' => true, 'message' => 'Please check your e-mail to reset your password.']);
+            } else {
+                return response()->json(['User not found!', 404]);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(['result' => false, 'message' => $exception->getMessage()]);
+        }
     }
 }
