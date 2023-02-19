@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('reset_passwords', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id');
+            $table->string('token');
             $table->timestamps();
         });
     }
