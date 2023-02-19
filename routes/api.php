@@ -19,3 +19,4 @@ use App\Http\Requests\LoginRequest;
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);
 Route::post('/reset_password', [UserController::class,'resetPassword']);
+Route::post('/set_newpassword', [UserController::class,'setNewPassword']);
