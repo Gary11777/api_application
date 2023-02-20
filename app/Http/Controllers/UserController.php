@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\ResetPassword;
-use App\Models\SetNewPassword;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
@@ -45,26 +45,14 @@ class UserController extends Controller
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        try {
             $token = Str::random(10);
             $this->userService->resetPassword($request->all(), $token);
-            Mail::to($request->mail)->send(new \App\Mail\ResetPassword($token, $request->email));
-            return response()->json(['result' => true,
-                'message' => 'Please check your e-mail to reset your password.']);
-        } catch (\Exception $exception) {
-            return response()->json(['result' => false, 'message' => $exception->getMessage()]);
-        }
+            return response()->json(['result' => true, 'message' => 'Please check your e-mail to reset your password.']);
     }
 
     public function setNewPassword(NewPasswordRequest $request)
     {
-        try {
             $this->userService->setNewPassword($request->all());
-            $id = DB::table('reset_passwords')->where('token', $request->token)->value('id');
-            ResetPassword::destroy($id);
             return response()->json(['result' => true, 'message' => 'Password is updated!']);
-        } catch (\Exception $exception) {
-            return response()->json(['result' => false, 'message' => $exception->getMessage()]);
-        }
     }
 }

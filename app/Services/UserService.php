@@ -7,6 +7,7 @@ use App\Models\SetNewPassword;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class UserService
@@ -22,7 +23,6 @@ class UserService
     public function resetPassword(array $data, string $token)
     {
         $userID = DB::table('users')->where('email', $data['email'])->value('id');
-        if ($userID != null) {
             ResetPassword::updateOrCreate(
                 ['user_id' => $userID],
                 [
@@ -30,24 +30,15 @@ class UserService
                     'token' => $token
                 ]
             );
-        } else {
-            return response()->json(['User not found!', 404]);
-        }
+        Mail::to($data['email'])->send(new \App\Mail\ResetPassword($token, $data['email']));
     }
     public function setNewPassword(array $data)
     {
         $token = $data['token'];
         $password = Hash::make($data['password']);
         $userID = DB::table('reset_passwords')->where('token', $token)->value('user_id');
-        if ($userID != null) {
-            SetNewPassword::updateOrCreate(
-                ['id' => $userID],
-                [
-                    'password' => $password
-                ]
-            );
-        } else {
-            return response()->json(['User not found!', 404]);
-        }
+        DB::table('users')->where('id', $userID)->update(['password' => $password]);
+        $id = DB::table('reset_passwords')->where('token', $data['token'])->value('id');
+        ResetPassword::destroy($id);
     }
 }
