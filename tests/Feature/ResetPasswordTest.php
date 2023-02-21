@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -24,10 +25,12 @@ class ResetPasswordTest extends TestCase
             'email' => 'user1@gmail.com',
             'password' => $password_hash
         ]);
+        Mail::fake();
         $response = $this->json('POST', 'api/reset_password',[
             'email' => $user->email
         ])->assertStatus(200);
         $response->assertJsonStructure(['result', 'message']);
+        Mail::assertSent(ResetPassword::class);
     }
 
     public function test_setNewPassword_method()

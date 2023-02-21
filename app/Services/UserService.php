@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\ResetPassword;
-use App\Models\SetNewPassword;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -32,13 +31,14 @@ class UserService
             );
         Mail::to($data['email'])->send(new \App\Mail\ResetPassword($token, $data['email']));
     }
+
     public function setNewPassword(array $data)
     {
         $token = $data['token'];
         $password = Hash::make($data['password']);
-        $userID = DB::table('reset_passwords')->where('token', $token)->value('user_id');
-        DB::table('users')->where('id', $userID)->update(['password' => $password]);
-        $id = DB::table('reset_passwords')->where('token', $data['token'])->value('id');
-        ResetPassword::destroy($id);
+        $query = DB::table('reset_passwords')->where('token', $token);
+        $resetToken = $query->first();
+        DB::table('users')->where('id', $resetToken->user_id)->update(['password' => $password]);
+        $query->delete();
     }
 }
