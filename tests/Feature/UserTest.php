@@ -34,7 +34,6 @@ class UserTest extends TestCase
     public function testLogin()
     {
         $this->artisan('passport:install');
-        //$password = $this->fake->password;
         $pass = 'user1';
         $password_hash = Hash::make($pass);
         $user = User::factory()->create([
