@@ -45,8 +45,7 @@ class UserController extends Controller
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        $token = Str::random(10);
-        $this->userService->resetPassword($request->all(), $token);
+        $this->userService->resetPassword($request->all());
         return response()->json(['result' => true, 'message' => 'Please check your e-mail to reset your password.']);
     }
 

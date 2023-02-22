@@ -19,9 +19,10 @@ class UserService
         return User::create($user_data);
     }
 
-    public function resetPassword(array $data, string $token)
+    public function resetPassword(array $data)
     {
         $userID = DB::table('users')->where('email', $data['email'])->value('id');
+        $token = Str::random(10);
             ResetPassword::updateOrCreate(
                 ['user_id' => $userID],
                 [
