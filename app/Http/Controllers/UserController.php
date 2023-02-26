@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\updateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
@@ -25,7 +26,7 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-    public function store (UserRequest $request)
+    public function store(UserRequest $request)
     {
         $user = $this->userService->createUser($request->all());
         $token = $user->createToken('auth_token')->accessToken;
@@ -53,5 +54,25 @@ class UserController extends Controller
     {
         $this->userService->setNewPassword($request->all());
         return response()->json(['result' => true, 'message' => 'Password is updated!']);
+    }
+
+    /**
+     * Update the given post.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUser(updateUserRequest $request, User $user)
+    {
+        if ($request->user()->cannot('update', $user)) {
+            abort(403);
+        }
+        if ($request->has('email')) {
+            DB::table('users')->where('name', $request->name)->update(['email' => $request->email]);
+        }
+        //$this->authorize('update', Auth::user());
+        //$user->update($request->all());
+        //$this->authorizeForUser($user,'update', User::class);
     }
 }
