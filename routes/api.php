@@ -17,7 +17,7 @@ use App\Http\Requests\LoginRequest;
 |
 */
 
-Route::prefix('auth')->group(function () {
+Route::prefix('auth:api')->group(function () {
     Route::put('/users', [UserController::class, 'updateUser']);
 });
 Route::post('/users', [UserController::class,'store']);

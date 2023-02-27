@@ -66,13 +66,11 @@ class UserController extends Controller
     public function updateUser(updateUserRequest $request, User $user)
     {
         if ($request->user()->cannot('update', $user)) {
-            abort(403);
+            dd(123);
+            //abort(403);
         }
         if ($request->has('email')) {
-            DB::table('users')->where('name', $request->name)->update(['email' => $request->email]);
+            DB::table('users')->where('id', $user->id)->update(['email' => $request->email]);
         }
-        //$this->authorize('update', Auth::user());
-        //$user->update($request->all());
-        //$this->authorizeForUser($user,'update', User::class);
     }
 }
