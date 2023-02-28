@@ -55,8 +55,6 @@ class UserPolicy
     {
         // For updating just own profile
         return $user->id === $model->id;
-           /* ? Response::allow()
-            : Response::deny('You do not update this data.');*/
     }
 
     /**

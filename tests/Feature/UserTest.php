@@ -60,7 +60,7 @@ class UserTest extends TestCase
         $data = [
             'name' => 'user111'
         ];
-        $response = $this->actingAs($user)->put("api/users/$user->id",$data);
+        $response = $this->actingAs($user, 'api')->put("api/users/$user->id", $data);
         $response->assertSuccessful();
         $user->refresh();
         $this->assertEquals('user111', $user->name);
