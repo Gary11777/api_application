@@ -42,4 +42,11 @@ class UserService
         DB::table('users')->where('id', $resetToken->user_id)->update(['password' => $password]);
         $query->delete();
     }
+
+    public function updateUser(array $data, User $user) {
+        $user_object = DB::table('users')->where('id', $user->id);
+        foreach ($data as $key => $value) {
+            $user_object->update(["$key" => $value]);
+        }
+    }
 }

@@ -17,8 +17,8 @@ use App\Http\Requests\LoginRequest;
 |
 */
 
-Route::prefix('auth:api')->group(function () {
-    Route::put('/users', [UserController::class, 'updateUser']);
+Route::middleware('auth:api')->group(function () {
+    Route::put('/users/{user}', [UserController::class, 'updateUser']);
 });
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);

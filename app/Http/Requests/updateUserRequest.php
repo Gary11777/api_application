@@ -13,7 +13,7 @@ class updateUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->user()->can('update', $this->route('user'));
     }
 
     /**
@@ -24,11 +24,8 @@ class updateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //'token' => 'required',
-            //'Authorization' => 'required',
-            //"token" => "exists:oauth_access_tokens,id",
-            'name' => 'required',
-            'email' => 'nullable|email',
+            'name' => 'nullable|unique:users,name',
+            'email' => 'nullable|email|unique:users,email',
             'password' => 'nullable'
         ];
     }
