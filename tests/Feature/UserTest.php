@@ -46,4 +46,23 @@ class UserTest extends TestCase
         ])->assertStatus(200);
         $response->assertJsonStructure(['token']);
     }
+
+    public function test_updateUser()
+    {
+        $this->artisan('passport:install');
+        $pass = 'user1';
+        $password_hash = Hash::make($pass);
+        $user = User::factory()->create([
+            'name' => 'user1',
+            'email' => 'user1@gmail.com',
+            'password' => $password_hash
+        ]);
+        $data = [
+            'name' => 'user111'
+        ];
+        $response = $this->actingAs($user, 'api')->put("api/users/$user->id", $data);
+        $response->assertSuccessful();
+        $user->refresh();
+        $this->assertEquals('user111', $user->name);
+    }
 }

@@ -16,6 +16,10 @@ use App\Http\Requests\LoginRequest;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::middleware('auth:api')->group(function () {
+    Route::put('/users/{user}', [UserController::class, 'updateUser']);
+});
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);
 Route::post('/reset_password', [UserController::class,'resetPassword']);
