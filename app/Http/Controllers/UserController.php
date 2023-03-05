@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\ResetPassword;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -66,5 +67,17 @@ class UserController extends Controller
     public function updateUser(updateUserRequest $request, User $user)
     {
         $this->userService->updateUser($request->all(), $user);
+    }
+
+    public function getUserEmails()
+    {
+        return $this->userService->getUserEmails();
+    }
+
+    public function getUserData(Request $request, User $user)
+    {
+        if ($this->authorize('view', $user)) {
+            return $this->userService->getUserData($request->all(), $user);
+        }
     }
 }
