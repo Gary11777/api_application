@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetUserDataRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\updateUserRequest;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\ResetPassword;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -66,5 +68,16 @@ class UserController extends Controller
     public function updateUser(updateUserRequest $request, User $user)
     {
         $this->userService->updateUser($request->all(), $user);
+    }
+
+    public function index()
+    {
+        $emails = $this->userService->index();
+        return response()->json(['emails' => $emails]);
+    }
+
+    public function show(GetUserDataRequest $request, User $user)
+    {
+        return response()->json(['user' => new UserResource($user)]);
     }
 }

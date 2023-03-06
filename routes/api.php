@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -19,6 +21,8 @@ use App\Http\Requests\LoginRequest;
 
 Route::middleware('auth:api')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'updateUser']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/users', [UserController::class, 'index']);
 });
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);

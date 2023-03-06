@@ -65,4 +65,28 @@ class UserTest extends TestCase
         $user->refresh();
         $this->assertEquals('user111', $user->name);
     }
+
+    public function test_getUserEmails_method()
+    {
+        $this->artisan('passport:install');
+        $users = User::factory()->count(3)->create();
+        $response = $this->actingAs($users[0], 'api')->get("api/users")->assertStatus(200);
+        $response->assertJsonStructure(['emails']);
+    }
+
+    public function test_getUserData_method()
+    {
+        $this->artisan('passport:install');
+        $users = User::factory()->count(3)->create();
+        $response = $this->actingAs($users[0], 'api')->get("api/users/1")
+            ->assertStatus(200);
+        $response->assertJsonStructure(['user']);
+    }
+    public function test_getUserData_otherUser_method()
+    {
+        $this->artisan('passport:install');
+        $users = User::factory()->count(3)->create();
+        $response = $this->actingAs($users[0], 'api')->get("api/users/2");
+        $response->assertStatus(403);
+    }
 }

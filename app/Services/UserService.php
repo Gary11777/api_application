@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Http\Resources\UserResource;
 use App\Models\ResetPassword;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -46,5 +48,9 @@ class UserService
     public function updateUser(array $data, User $user) {
         $user->fill($data);
         $user->save();
+    }
+    public function index()
+    {
+        return DB::table('users')->pluck('email')->toArray();
     }
 }
