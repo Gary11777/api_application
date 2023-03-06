@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetUserDataRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\updateUserRequest;
 use Illuminate\Http\Request;
@@ -71,13 +72,13 @@ class UserController extends Controller
 
     public function getUserEmails()
     {
-        return $this->userService->getUserEmails();
+        $emails = $this->userService->getUserEmails();
+        return response()->json(['result' => true, 'emails' => $emails]);
     }
 
-    public function getUserData(Request $request, User $user)
+    public function getUserData(GetUserDataRequest $request, User $user)
     {
-        if ($this->authorize('view', $user)) {
-            return $this->userService->getUserData($request->all(), $user);
-        }
+        $user_data = $this->userService->getUserData($user);
+        return response()->json(['result' => true, 'user' => $user_data]);
     }
 }

@@ -22,9 +22,9 @@ use App\Http\Requests\LoginRequest;
 Route::middleware('auth:api')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'updateUser']);
     Route::get('/users/{user}', [UserController::class, 'getUserData']);
+    Route::get('/users', [UserController::class, 'getUserEmails']);
 });
 Route::post('/users', [UserController::class,'store']);
-Route::get('/users', [UserController::class, 'getUserEmails']);
 Route::post('/login', [UserController::class,'login']);
 Route::post('/reset_password', [UserController::class,'resetPassword']);
 Route::post('/set_newpassword', [UserController::class,'setNewPassword']);

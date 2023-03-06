@@ -30,9 +30,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->id === $model->id
-            ? Response::allow()
-            : Response::deny('You do not get these data.');
+        return $user->id === $model->id;
     }
 
     /**

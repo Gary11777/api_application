@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\UserResource;
 use App\Models\ResetPassword;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -53,8 +54,8 @@ class UserService
         return $collection = DB::table('users')->pluck('email')->toArray();
     }
 
-    public function getUserData(array $data, User $user)
+    public function getUserData(User $user)
     {
-        return $user->toArray();
+        return new UserResource($user);
     }
 }
