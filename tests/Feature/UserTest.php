@@ -71,7 +71,7 @@ class UserTest extends TestCase
         $this->artisan('passport:install');
         $users = User::factory()->count(3)->create();
         $response = $this->actingAs($users[0], 'api')->get("api/users")->assertStatus(200);
-        $response->assertJsonStructure(['result', 'emails']);
+        $response->assertJsonStructure(['emails']);
     }
 
     public function test_getUserData_method()
@@ -80,7 +80,7 @@ class UserTest extends TestCase
         $users = User::factory()->count(3)->create();
         $response = $this->actingAs($users[0], 'api')->get("api/users/1")
             ->assertStatus(200);
-        $response->assertJsonStructure(['result', 'user']);
+        $response->assertJsonStructure(['user']);
     }
     public function test_getUserData_otherUser_method()
     {

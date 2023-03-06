@@ -70,15 +70,14 @@ class UserController extends Controller
         $this->userService->updateUser($request->all(), $user);
     }
 
-    public function getUserEmails()
+    public function index()
     {
-        $emails = $this->userService->getUserEmails();
-        return response()->json(['result' => true, 'emails' => $emails]);
+        $emails = $this->userService->index();
+        return response()->json(['emails' => $emails]);
     }
 
-    public function getUserData(GetUserDataRequest $request, User $user)
+    public function show(GetUserDataRequest $request, User $user)
     {
-        $user_data = $this->userService->getUserData($user);
-        return response()->json(['result' => true, 'user' => $user_data]);
+        return response()->json(['user' => new UserResource($user)]);
     }
 }

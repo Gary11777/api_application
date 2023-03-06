@@ -49,13 +49,8 @@ class UserService
         $user->fill($data);
         $user->save();
     }
-    public function getUserEmails()
+    public function index()
     {
-        return $collection = DB::table('users')->pluck('email')->toArray();
-    }
-
-    public function getUserData(User $user)
-    {
-        return new UserResource($user);
+        return DB::table('users')->pluck('email')->toArray();
     }
 }

@@ -21,8 +21,8 @@ use App\Http\Requests\LoginRequest;
 
 Route::middleware('auth:api')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'updateUser']);
-    Route::get('/users/{user}', [UserController::class, 'getUserData']);
-    Route::get('/users', [UserController::class, 'getUserEmails']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/users', [UserController::class, 'index']);
 });
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);
