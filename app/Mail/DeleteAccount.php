@@ -15,15 +15,17 @@ class DeleteAccount extends Mailable
     use Queueable, SerializesModels;
 
     public $email;
+    public $pdf;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct($email, $pdf)
     {
         $this->email = $email;
+        $this->pdf = $pdf;
     }
 
     /**
@@ -59,9 +61,8 @@ class DeleteAccount extends Mailable
     public function attachments()
     {
         return [
-            /*Attachment::fromPath('/pdf_storage')
-                ->as('delete_data.pdf')
-                ->withMime('application/pdf'),*/
+            Attachment::fromData(fn () => $this->pdf, 'delete_data.pdf')
+                ->withMime('application/pdf'),
         ];
     }
 }

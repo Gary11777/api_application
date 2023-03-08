@@ -57,12 +57,11 @@ class UserService
 
     public function delete(User $user)
     {
-        $user->fill(['status' => 1]);
+        $user->fill(['status' => 2]);
         $user->save();
 
-        //$pdf = Pdf::loadView('pdf.delete_data', 'Hello! Your account is deleted!');
-        //$pdf->output('delete_data.pdf');
+        $pdf = PDF::loadHTML('Your account is deleted!')->output();
 
-        Mail::to($user->email)->send(new \App\Mail\DeleteAccount($user->email));
+        Mail::to($user->email)->send(new \App\Mail\DeleteAccount($user->email, $pdf));
     }
 }
