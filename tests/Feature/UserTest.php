@@ -97,8 +97,8 @@ class UserTest extends TestCase
         $this->artisan('passport:install');
         $users = User::factory()->count(3)->create();
         Mail::fake();
-        $response = $this->actingAs($users[0], 'api')->get("api/users/1")->assertSuccessful();
-        $response->assertJsonStructure(null, 204);
+        $response = $this->actingAs($users[0], 'api')->delete("api/users/1");
+        $response->assertStatus(204);
         Mail::assertSent(DeleteAccount::class);
     }
 }
