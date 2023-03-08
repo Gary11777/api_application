@@ -13,7 +13,7 @@ class DeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('view', $this->route('user'));
+        return $this->user()->can('delete', $this->route('user'));
     }
 
     /**

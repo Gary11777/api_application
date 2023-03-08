@@ -41,9 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-// DOMPDF Wrapper for Laravel
-$app->register(\Barryvdh\DomPDF\ServiceProvider::class);
-$app->configure('dompdf');
 
 /*
 |--------------------------------------------------------------------------

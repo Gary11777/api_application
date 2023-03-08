@@ -59,7 +59,7 @@ class DeleteAccount extends Mailable
     public function attachments()
     {
         return [
-            /*Attachment::fromPath('/pdf_storage/delete_data.pdf')
+            /*Attachment::fromPath('/pdf_storage')
                 ->as('delete_data.pdf')
                 ->withMime('application/pdf'),*/
         ];
