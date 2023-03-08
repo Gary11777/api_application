@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteRequest;
 use App\Http\Requests\GetUserDataRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\updateUserRequest;
@@ -23,6 +24,8 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
+    const ACTIVE = 1;
+    const INACTIVE = 2;
 
     public function __construct(protected UserService $userService)
     {
@@ -79,5 +82,11 @@ class UserController extends Controller
     public function show(GetUserDataRequest $request, User $user)
     {
         return response()->json(['user' => new UserResource($user)]);
+    }
+
+    public function delete(DeleteRequest $request, User $user)
+    {
+        $this->userService->delete($user);
+        return response()->json(['success' => true]);
     }
 }
