@@ -23,6 +23,7 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/users/{user}', [UserController::class, 'updateUser']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     Route::get('/users', [UserController::class, 'index']);
+    Route::delete('/users/{user}', [UserController::class, 'delete']);
 });
 Route::post('/users', [UserController::class,'store']);
 Route::post('/login', [UserController::class,'login']);

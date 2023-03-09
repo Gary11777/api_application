@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserService
 {
@@ -52,5 +53,15 @@ class UserService
     public function index()
     {
         return DB::table('users')->pluck('email')->toArray();
+    }
+
+    public function delete(User $user)
+    {
+        $user->fill(['status' => User::INACTIVE]);
+        $user->save();
+
+        $pdf = PDF::loadHTML('Your account is deleted!')->output();
+
+        Mail::to($user->email)->send(new \App\Mail\DeleteAccount($user->email, $pdf));
     }
 }

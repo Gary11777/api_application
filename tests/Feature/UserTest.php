@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Mail\DeleteAccount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -88,5 +90,15 @@ class UserTest extends TestCase
         $users = User::factory()->count(3)->create();
         $response = $this->actingAs($users[0], 'api')->get("api/users/2");
         $response->assertStatus(403);
+    }
+
+    public function test_delete_method()
+    {
+        $this->artisan('passport:install');
+        $users = User::factory()->count(3)->create();
+        Mail::fake();
+        $response = $this->actingAs($users[0], 'api')->delete("api/users/1");
+        $response->assertStatus(204);
+        Mail::assertSent(DeleteAccount::class);
     }
 }
