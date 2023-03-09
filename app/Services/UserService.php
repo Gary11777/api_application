@@ -57,7 +57,7 @@ class UserService
 
     public function delete(User $user)
     {
-        $user->fill(['status' => 2]);
+        $user->fill(['status' => User::INACTIVE]);
         $user->save();
 
         $pdf = PDF::loadHTML('Your account is deleted!')->output();
